@@ -51,6 +51,7 @@
 #define MODE_MEMORY  0
 #define MODE_BATTLE  1
 #define MODE_BEEGEES 2
+#define MODE_CUSTOM  3
 
 // Game state variables
 byte gameMode = MODE_MEMORY; //By default, let's play the memory game
@@ -96,12 +97,19 @@ void setup()
 
     //Now do nothing. Battle mode will be serviced in the main routine
   }
+  
+  if (checkButton() == CHOICE_BLUE){
+    gameMode = MODE_CUSTOM;
+    
+  }
 
   play_winner(); // After setup is complete, say hello to the world
 }
 
 void loop()
 {
+  if(gameMode == MODE_CUSTOM) customMode();
+  
   attractMode(); // Blink lights while waiting for user to press a button
 
   // Indicate the start of game play
@@ -126,6 +134,28 @@ void loop()
     play_loser(); // Player lost, play loser tones
   }
 }
+
+
+/************************************************************************
+       CUSTOM HERE     CUSTOM HERE       CUSTOM HERE     CUSTOM HERE
+************************************************************************/
+
+void customMode(){
+  
+  int start_level = analogRead(0);
+  
+  while (1) {
+   
+   if(abs(analogRead(0) - start_level) > 10){
+      play_winner();
+    
+   }  
+  }
+}
+
+
+
+/************************************************************************/
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 //The following functions are related to game play only
@@ -459,6 +489,5 @@ void changeLED(void)
   LEDnumber++; // Goto the next LED
   if(LEDnumber > 3) LEDnumber = 0; // Wrap the counter if needed
 }
-
 
 
