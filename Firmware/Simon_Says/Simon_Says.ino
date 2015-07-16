@@ -53,6 +53,8 @@
 #define MODE_BEEGEES 2
 #define MODE_CUSTOM  3
 
+#define readLight() analogRead(0)
+
 // Game state variables
 byte gameMode = MODE_MEMORY; //By default, let's play the memory game
 byte gameBoard[32]; //Contains the combination of buttons as we advance
@@ -144,11 +146,11 @@ void loop()
 
 void customMode(){
   
-  int start_level = analogRead(0);
+  int start_level = readLight();
   
   while (1) {
    
-   if(abs(analogRead(0) - start_level) > 10){
+   if(abs(readLight() - start_level) > 10){
       play_winner();
     
    }  
